@@ -1,0 +1,16 @@
+# config file version
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    url: http://prometheus:9090
+  - name: Loki
+    type: loki
+    url: http://loki:3100
+  - name: NATS
+    type: nats-datasource
+    url: http://nats-broker:8222
+    basicAuth: false
+    jsonData:
+      server: nats://admin:admin123@nats-broker:4222

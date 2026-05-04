@@ -1,0 +1,266 @@
+{
+  "freeTextAnnotations": [
+    {
+      "id": "freeText_1763721302938_1",
+      "text": "172.17.0.1/24",
+      "position": {
+        "x": 7,
+        "y": 231
+      },
+      "fontSize": 4,
+      "fontColor": "#ffffff",
+      "backgroundColor": "transparent",
+      "fontWeight": "normal",
+      "fontStyle": "normal",
+      "textDecoration": "none",
+      "textAlign": "left",
+      "fontFamily": "monospace",
+      "roundedBackground": true
+    },
+    {
+      "id": "freeText_1763721327571_0",
+      "text": "172.17.0.2/24",
+      "position": {
+        "x": 105,
+        "y": 231
+      },
+      "fontSize": 4,
+      "fontColor": "#ffffff",
+      "backgroundColor": "transparent",
+      "fontWeight": "normal",
+      "fontStyle": "normal",
+      "textDecoration": "none",
+      "textAlign": "left",
+      "fontFamily": "monospace",
+      "roundedBackground": true
+    },
+    {
+      "id": "freeText_1763721349748_0",
+      "text": "172.17.0.3/24",
+      "position": {
+        "x": 203,
+        "y": 231
+      },
+      "fontSize": 4,
+      "fontColor": "#ffffff",
+      "backgroundColor": "transparent",
+      "fontWeight": "normal",
+      "fontStyle": "normal",
+      "textDecoration": "none",
+      "textAlign": "left",
+      "fontFamily": "monospace",
+      "roundedBackground": true
+    }
+  ],
+  "freeShapeAnnotations": [],
+  "trafficRateAnnotations": [],
+  "groupStyleAnnotations": [
+    {
+      "id": "Telemetry Stack:1",
+      "name": "Telemetry Stack",
+      "level": "1",
+      "position": {
+        "x": 310.10221611154367,
+        "y": 46.6394555900483
+      },
+      "width": 300,
+      "height": 208,
+      "backgroundColor": "#a400f0",
+      "backgroundOpacity": 40,
+      "borderColor": "#dddddd",
+      "borderWidth": 0,
+      "borderStyle": "solid",
+      "borderRadius": 4,
+      "labelColor": "#ebecf0",
+      "labelPosition": "top-center",
+      "zIndex": -1
+    }
+  ],
+  "networkNodeAnnotations": [],
+  "nodeAnnotations": [
+    {
+      "id": "nats-broker",
+      "position": {
+        "x": 460,
+        "y": 160
+      },
+      "groupId": "Telemetry Stack:1",
+      "icon": "server"
+    },
+    {
+      "id": "gnmic",
+      "icon": "server",
+      "position": {
+        "x": 469.10221611154367,
+        "y": 81.6394555900483
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      },
+      "level": "1",
+      "groupId": "Telemetry Stack:1"
+    },
+    {
+      "id": "prometheus",
+      "icon": "server",
+      "position": {
+        "x": 409.10221611154367,
+        "y": 161.63945559004833
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      },
+      "level": "1",
+      "groupId": "Telemetry Stack:1"
+    },
+    {
+      "id": "grafana",
+      "icon": "server",
+      "position": {
+        "x": 349.10221611154367,
+        "y": 81.6394555900483
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      },
+      "level": "1",
+      "groupId": "Telemetry Stack:1"
+    },
+    {
+      "id": "promtail",
+      "icon": "server",
+      "position": {
+        "x": 349.10221611154367,
+        "y": 161.63945559004833
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      },
+      "level": "1",
+      "groupId": "Telemetry Stack:1"
+    },
+    {
+      "id": "loki",
+      "icon": "server",
+      "position": {
+        "x": 409.10221611154367,
+        "y": 81.6394555900483
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      },
+      "level": "1",
+      "groupId": "Telemetry Stack:1"
+    },
+    {
+      "id": "spine1",
+      "icon": "router",
+      "position": {
+        "x": 80,
+        "y": 0
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      },
+      "interfacePattern": "e1-{n}"
+    },
+    {
+      "id": "spine2",
+      "icon": "router",
+      "position": {
+        "x": 180,
+        "y": 0
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      },
+      "interfacePattern": "e1-{n}"
+    },
+    {
+      "id": "leaf1",
+      "icon": "router",
+      "position": {
+        "x": 40,
+        "y": 140
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      },
+      "interfacePattern": "e1-{n}"
+    },
+    {
+      "id": "leaf2",
+      "icon": "router",
+      "position": {
+        "x": 140,
+        "y": 140
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      },
+      "interfacePattern": "e1-{n}"
+    },
+    {
+      "id": "leaf3",
+      "icon": "router",
+      "position": {
+        "x": 240,
+        "y": 140
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      },
+      "interfacePattern": "e1-{n}"
+    },
+    {
+      "id": "client1",
+      "icon": "client",
+      "position": {
+        "x": 40,
+        "y": 260
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      }
+    },
+    {
+      "id": "client2",
+      "icon": "client",
+      "position": {
+        "x": 140,
+        "y": 260
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      }
+    },
+    {
+      "id": "client3",
+      "icon": "client",
+      "position": {
+        "x": 240,
+        "y": 260
+      },
+      "geoCoordinates": {
+        "lat": 48.684826888402256,
+        "lng": 9.007895390625677
+      }
+    }
+  ],
+  "edgeAnnotations": [],
+  "aliasEndpointAnnotations": [],
+  "viewerSettings": {},
+  "cloudNodeAnnotations": []
+}
