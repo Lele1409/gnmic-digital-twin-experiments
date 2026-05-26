@@ -36,4 +36,10 @@ It is recommended to use the containerlab plugin to allow for visualizations of 
 
 [srl-telemetry-lab/README.md](srl-telemetry-lab/README.md)
 
-> srl-telemetry-lab is an existing clab topology which comes with gnmic, prometheus, and grafana preconfigured. We use this topology by expanding it with our own NATS message broker, to test outputting telemetry from gnmic to NATS 
+> srl-telemetry-lab is an existing clab topology which comes with gnmic, prometheus, and grafana preconfigured. We use this topology by expanding it with our own NATS message broker, to test outputting telemetry from gnmic to NATS
+
+## 3x-srl-nats
+
+[3x-srl-nats/README.md](3x-srl-nats/README.md)
+
+> 3x-srl-nats extends 3x-srl with a NATS broker and a gNMIc telemetry collector. Both the original network and the cloned digital twin publish telemetry to a single NATS service, using the subject prefixes `original` and `twin` to differentiate them. gNMIc uses the Docker API to discover nodes dynamically, so the cloned topology is picked up automatically after deployment.

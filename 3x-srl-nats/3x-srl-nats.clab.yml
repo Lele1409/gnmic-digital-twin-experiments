@@ -1,0 +1,42 @@
+name: 3x-srl-nats
+
+mgmt:
+  network: 3x-srl-nats-mgmt
+  ipv4-subnet: 172.21.0.0/24
+
+topology:
+  nodes:
+    srl1:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux
+      startup-config: configs/fabric/srl1.cfg
+    srl2:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux
+      startup-config: configs/fabric/srl2.cfg
+    srl3:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux
+      startup-config: configs/fabric/srl3.cfg
+
+    nats-broker:
+      kind: linux
+      image: nats:latest
+      ports:
+        - 4222:4222
+        - 8222:8222
+      binds:
+        - configs/nats/nats-server.conf:/etc/nats/nats-server.conf:ro
+      cmd: -c /etc/nats/nats-server.conf
+
+    gnmic:
+      kind: linux
+      image: ghcr.io/openconfig/gnmic:0.39.1
+      binds:
+        - configs/gnmic/gnmic-config.yml:/gnmic-config.yml:ro
+        - /var/run/docker.sock:/var/run/docker.sock
+      cmd: --config /gnmic-config.yml --log subscribe
+
+  links:
+    - endpoints: ["srl1:e1-1", "srl2:e1-1"]
+    - endpoints: ["srl2:e1-2", "srl3:e1-1"]

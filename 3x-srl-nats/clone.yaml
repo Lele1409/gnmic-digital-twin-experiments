@@ -1,0 +1,131 @@
+username: admin
+password: NokiaSrl1!
+skip-verify: true
+encoding: json_ietf
+# log: true
+
+targets:
+  clab-3x-srl-nats-srl1:
+  clab-3x-srl-nats-srl2:
+  clab-3x-srl-nats-srl3:
+
+processors:
+  clone-topology:
+    event-trigger:
+      # debug: true
+      actions:
+        - mkdir_output
+        - chassis
+        - lldp
+        - read_config
+        - write_config
+        - clab_topo
+        - deploy_topo
+
+actions:
+  mkdir_output:
+    name: mkdir_output
+    type: script
+    command: mkdir -p cloned-topology-output
+
+  chassis:
+    name: chassis
+    type: gnmi
+    target: all
+    rpc: sub
+    encoding: json_ietf
+    #debug: true
+    format: event
+    paths:
+      - /platform/chassis/type
+
+  lldp:
+    name: lldp
+    type: gnmi
+    target: all
+    rpc: sub
+    encoding: json_ietf
+    #debug: true
+    format: event
+    paths:
+      - /system/lldp/interface[name=ethernet-*]
+
+  read_config:
+    name: read_config
+    type: gnmi
+    target: all
+    rpc: get
+    data-type: config
+    encoding: json_ietf
+    #debug: true
+    paths:
+      - /
+
+  write_config:
+    name: write_config
+    type: template
+    template: |
+      {{- range $n, $m := .Env.read_config }}
+      {{- $filename := print "cloned-topology-output/" $n  ".json"}}
+          {{ file.Write $filename (index $m 0 "updates" 0 "values" "" | data.ToJSONPretty "  " ) }}
+          {{- end }}
+        #debug: true
+
+  clab_topo:
+    name: clab_topo
+    type: template
+    #debug: true
+    output: cloned-topology-output/gnmic.clab.yaml
+    template: |
+          name: gNMIc-action-generated
+
+          mgmt:
+            network: 3x-srl-nats-mgmt
+
+          topology:
+            defaults:
+              kind: nokia_srlinux
+            kinds:
+              nokia_srlinux:
+                image: ghcr.io/nokia/srlinux:latest
+
+            nodes:
+          {{- range $n, $m := .Env.lldp }}
+            {{- $type := index $.Env.chassis $n 0 0 "values" "/srl_nokia-platform:platform/srl_nokia-platform-chassis:chassis/type" }}
+            {{- $type = $type | strings.ReplaceAll "7220 IXR-D1" "ixr-d1" }}
+            {{- $type = $type | strings.ReplaceAll "7220 IXR-D2L" "ixr-d2l" }}
+            {{- $type = $type | strings.ReplaceAll "7220 IXR-D2" "ixr-d2" }}
+            {{- $type = $type | strings.ReplaceAll "7220 IXR-D3L" "ixr-d3l" }}
+            {{- $type = $type | strings.ReplaceAll "7220 IXR-D3" "ixr-d3" }}
+            {{- $type = $type | strings.ReplaceAll "7250 IXR-6" "ixr-6" }}
+            {{- $type = $type | strings.ReplaceAll "7250 IXR-10" "ixr-10" }}
+            {{- $type = $type | strings.ReplaceAll "7220 IXR-H1" "ixr-h1" }}
+            {{- $type = $type | strings.ReplaceAll "7220 IXR-H2" "ixr-h2" }}
+            {{- $type = $type | strings.ReplaceAll "7220 IXR-H3" "ixr-h3" }}
+              {{ $n | strings.TrimPrefix "clab-3x-srl-nats-" }}:
+                type: {{ $type }}
+                startup-config: {{ print $n ".json"}}
+          {{- end }}
+
+            links:
+          {{- range $n, $m := .Env.lldp }}
+            {{- range $rsp := $m }}
+              {{- range $ev := $rsp }}
+                {{- if index $ev.values "/srl_nokia-system:system/srl_nokia-lldp:lldp/interface/neighbor/system-name" }}
+                {{- $node1 := $ev.tags.source | strings.TrimPrefix "clab-3x-srl-nats-" }}
+                {{- $iface1 := $ev.tags.interface_name | strings.ReplaceAll "ethernet-" "e" | strings.ReplaceAll "/" "-" }}
+                {{- $node2 := index $ev.values "/srl_nokia-system:system/srl_nokia-lldp:lldp/interface/neighbor/system-name" }}
+                {{- $iface2 := index $ev.values "/srl_nokia-system:system/srl_nokia-lldp:lldp/interface/neighbor/port-id" | strings.ReplaceAll "ethernet-" "e" | strings.ReplaceAll "/" "-" }}
+                  {{- if lt $node1 $node2 }}
+              - endpoints: ["{{ $node1 }}:{{ $iface1 }}", "{{ $node2 }}:{{ $iface2 }}"]
+                  {{- end }}
+                {{- end }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+
+  deploy_topo:
+    name: deploy_topo
+    type: script
+    command: sudo clab dep -t cloned-topology-output/gnmic.clab.yaml --reconfigure
+    debug: true

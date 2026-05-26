@@ -1,0 +1,69 @@
+username: admin
+password: NokiaSrl1!
+skip-verify: true
+encoding: json_ietf
+timeout: 10s
+
+loader:
+  type: docker
+  address: unix:///var/run/docker.sock
+  interval: 60s
+  filters:
+    - containers:
+        - label: clab-node-kind=nokia_srlinux
+      network:
+        name: 3x-srl-nats-mgmt
+      port: "57400"
+      config:
+        username: admin
+        password: NokiaSrl1!
+        skip-verify: true
+        subscriptions:
+          - srl-if-stats
+
+subscriptions:
+  srl-if-stats:
+    mode: stream
+    stream-mode: sample
+    sample-interval: 5s
+    paths:
+      - /interface[name=ethernet-1/*]/oper-state
+      - /interface[name=ethernet-1/*]/traffic-rate
+
+outputs:
+  nats-original:
+    type: nats
+    address: nats://nats-broker:4222
+    username: admin
+    password: admin123
+    # Subjects: original.<target-name>.<subscription-name>
+    subject-prefix: original
+    event-processors:
+      - allow-original
+      - trim-prefixes
+  nats-twin:
+    type: nats
+    address: nats://nats-broker:4222
+    username: admin
+    password: admin123
+    # Subjects: twin.<target-name>.<subscription-name>
+    subject-prefix: twin
+    event-processors:
+      - allow-twin
+      - trim-prefixes
+
+processors:
+  allow-original:
+    event-allow:
+      condition: '.tags.source | startswith("clab-3x-srl-nats-")'
+  allow-twin:
+    event-allow:
+      condition: '.tags.source | startswith("clab-gNMIc-action-generated-")'
+  trim-prefixes:
+    event-strings:
+      value-names:
+        - "^/state/.*"
+      transforms:
+        - trim-prefix:
+            apply-on: "name"
+            prefix: "/state/"

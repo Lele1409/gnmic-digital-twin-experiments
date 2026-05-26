@@ -1,0 +1,50 @@
+{
+  "freeTextAnnotations": [],
+  "freeShapeAnnotations": [],
+  "trafficRateAnnotations": [],
+  "groupStyleAnnotations": [],
+  "networkNodeAnnotations": [],
+  "nodeAnnotations": [
+    {
+      "id": "srl1",
+      "interfacePattern": "e1-{n}",
+      "position": {
+        "x": 100,
+        "y": 360
+      }
+    },
+    {
+      "id": "srl2",
+      "interfacePattern": "e1-{n}",
+      "position": {
+        "x": 240,
+        "y": 340
+      }
+    },
+    {
+      "id": "srl3",
+      "interfacePattern": "e1-{n}",
+      "position": {
+        "x": 400,
+        "y": 360
+      }
+    },
+    {
+      "id": "nats-broker",
+      "position": {
+        "x": 660,
+        "y": 340
+      }
+    },
+    {
+      "id": "gnmic",
+      "position": {
+        "x": 860,
+        "y": 360
+      }
+    }
+  ],
+  "edgeAnnotations": [],
+  "aliasEndpointAnnotations": [],
+  "viewerSettings": {}
+}
